@@ -2,21 +2,508 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=390,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" id="vp"/>
+<meta http-equiv="x-dns-prefetch-control" content="on"/>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+<link rel="preload" as="image" href="/images/img_png_02.webp" type="image/webp" fetchpriority="high"/>
+<link rel="preload" as="image" href="/images/img_png_01.webp" type="image/webp"/>
+<link rel="dns-prefetch" href="https://fonts.gstatic.com"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=5.0" id="vp"/>
 <script>
 (function(){
-  var vp = document.getElementById('vp') ||
-           document.querySelector('meta[name=viewport]');
-  var screenW = screen.width;
-  // FIXED: Proper 1.0 scale for all devices
-  var scale = 1.0;
-  vp.setAttribute('content',
-    'width=device-width' +
-    ',initial-scale=' + scale.toFixed(4) +
-    ',minimum-scale=' + scale.toFixed(4) +
-    ',maximum-scale=' + scale.toFixed(4) +
-    ',user-scalable=no'
-  );
-  document.documentElement.style.setProperty('--vp-scale', scale.toFixed(4));
+var vp=document.getElementById('vp')||document.querySelector('meta[name=viewport]');
+var scale=1.0;
+vp.setAttribute('content','width=device-width,initial-scale='+scale.toFixed(4)+',minimum-scale='+scale.toFixed(4)+',maximum-scale=5.0');
+document.documentElement.style.setProperty('--vp-scale',scale.toFixed(4));
 })();
 </script>
+<title>Baldeo Public School, Mathura — CBSE Affiliated | Affiliation No. 2130785</title>
+<meta name="description" content="Baldeo Public School — An English Medium Senior Secondary Co-Educational School in Baldeo, Mathura. CBSE Affiliated (No. 2130785). Admissions open for 2026–27."/>
+<meta name="theme-color" content="#FAFAF8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin/>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" as="script"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div id="noise" aria-hidden="true"></div>
+<div id="cur-dot" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"><span id="cur-lbl"></span></div>
+<canvas id="click-canvas" aria-hidden="true"></canvas>
+
+<svg id="lg-filter" aria-hidden="true">
+<defs>
+<filter id="glass-blur">
+<feGaussianBlur stdDeviation="3" result="blur"/>
+<feColorMatrix type="saturate" values="1.8"/>
+</filter>
+</defs>
+</svg>
+
+<nav id="nav" role="navigation" aria-label="Main Navigation">
+<a href="#hero" class="n-logo" aria-label="Baldeo Public School Home">
+<div class="n-ico" aria-hidden="true">
+<img src="/images/img_png_01.webp" alt="BPS Logo" loading="eager" fetchpriority="high" decoding="sync" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"/>
+</div>
+<div>
+<span class="n-name">Baldeo Public School</span>
+<span class="n-aff">CBSE Affiliated · No. 2130785</span>
+</div>
+</a>
+<div class="n-links" role="list">
+<a href="#about" role="listitem">About</a>
+<a href="#academics" role="listitem">Academics</a>
+<a href="#facilities" role="listitem">Facilities</a>
+<a href="#admissions" role="listitem">Admissions</a>
+<a href="#contact" class="n-apply" role="listitem">Apply Now</a>
+</div>
+<button class="n-ham" id="ham" aria-label="Open menu" aria-expanded="false">≡</button>
+</nav>
+
+<div id="mob" role="dialog" aria-label="Mobile Navigation" aria-modal="true">
+<a href="#hero">Home</a>
+<a href="#about">About</a>
+<a href="#mission-vision">Mission</a>
+<a href="#academics">Academics</a>
+<a href="#facilities">Facilities</a>
+<a href="#transport">Transport</a>
+<a href="#student-life">Student Life</a>
+<a href="#admissions">Admissions</a>
+<a href="#contact">Contact</a>
+</div>
+
+<div id="sp" aria-label="Page sections" role="navigation">
+<div class="sp-in">
+<div class="sp-ct" id="sp-ct">01/9</div>
+<div class="sp-dots" id="sp-dots"></div>
+</div>
+</div>
+
+<div id="mp" aria-hidden="true">
+<div class="mp-in">
+<span id="mp-ct">01/9</span>
+<div class="mp-bar"><div id="mp-fill"></div></div>
+<span id="mp-lbl">Welcome</span>
+</div>
+</div>
+
+<div id="pl" aria-label="Loading" role="status">
+<div class="pl-blob pl-blob-1" aria-hidden="true"></div>
+<div class="pl-blob pl-blob-2" aria-hidden="true"></div>
+<div class="pl-blob pl-blob-3" aria-hidden="true"></div>
+<canvas id="pl-canvas" aria-hidden="true"></canvas>
+<div class="pl-pct" id="pl-pct" aria-hidden="true">0</div>
+<div class="pl-inner">
+<div class="pl-orb-wrap">
+<div class="pl-orb-ring" aria-hidden="true"></div>
+<div class="pl-orb-ring2" aria-hidden="true"></div>
+<div class="pl-orb-disc">
+<span class="pl-orb-letter" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:0;border-radius:50%;overflow:hidden;">
+<img src="/images/img_png_01.webp" alt="BPS" loading="eager" fetchpriority="high" decoding="sync" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+</span>
+</div>
+</div>
+<div class="pl-eye">Baldeo · Mathura · Est. 2003</div>
+<div class="pl-name-block">
+<div class="pl-name-line" id="pl-l1"></div>
+<div class="pl-name-line" id="pl-l2"></div>
+</div>
+<p class="pl-sub">CBSE Affiliated Senior Secondary School</p>
+<div class="pl-line-wrap"><div class="pl-line"></div></div>
+<div class="pl-prog-wrap">
+<div class="pl-bar-wrap"><div class="pl-bar" id="pl-bar"></div></div>
+<div class="pl-dots" aria-hidden="true">
+<div class="pl-dot"></div><div class="pl-dot"></div><div class="pl-dot"></div>
+</div>
+</div>
+</div>
+</div>
+
+<main id="main-content">
+
+<section class="sec" id="hero" aria-label="Welcome to Baldeo Public School">
+<canvas id="hc" aria-hidden="true"></canvas>
+<div class="hi">
+<div class="he rev">
+<span class="eg">CBSE Affiliated · Affiliation No. 2130785</span>
+<h1 class="dh ht" aria-label="Where Knowledge Becomes Light.">
+Where Knowledge<br>Becomes Light.
+</h1>
+<div class="morph-wrap" aria-live="polite" aria-atomic="true">
+<span class="morph-el" id="mh1" aria-hidden="true">Where Knowledge Becomes Light.</span>
+<span class="morph-el" id="mh2" aria-hidden="true">Excellence Through Values.</span>
+</div>
+<p class="bh">An English Medium Senior Secondary Co-Educational School in Baldeo, Mathura — where tradition meets vision, and every child is guided to discover their highest potential.</p>
+<div class="hb">
+<a href="#admissions" class="btn-pr" data-cursor="Apply">Begin Your Journey</a>
+<a href="#about" class="btn-sc" data-cursor="Explore">Discover BPS</a>
+</div>
+<div class="hs">
+<div class="hst"><span class="hsn">22+</span><span class="hsl">Years of<br>Excellence</span></div>
+<div class="hsd" aria-hidden="true"></div>
+<div class="hst"><span class="hsn">2000+</span><span class="hsl">Alumni<br>Worldwide</span></div>
+<div class="hsd" aria-hidden="true"></div>
+<div class="hst"><span class="hsn">100%</span><span class="hsl">CBSE Board<br>Results</span></div>
+</div>
+</div>
+<div class="hv rev" id="apu-badge-logo" aria-hidden="true">
+<img src="/images/img_png_02.webp" alt="Baldeo Public School" loading="eager" fetchpriority="high" decoding="async" class="apu-hero" style="width:100%;height:100%;object-fit:contain;"/>
+</div>
+</div>
+</section>
+
+<section class="sec" id="about" aria-labelledby="about-heading">
+<div class="seb">About</div>
+<div class="si">
+<div class="g2">
+<div class="rev">
+<span class="eg">Our Story</span>
+<h2 id="about-heading">
+<span class="morph-el" id="ma1" aria-hidden="true">Founded with Grace. Built with Purpose.</span>
+<span class="morph-el" id="ma2" aria-hidden="true">22 Years of Excellence in Braj.</span>
+</h2>
+<p class="bl">Baldeo Public School was established with a singular vision — to create a place of learning that honours the cultural richness of Braj while preparing students for a rapidly changing world. Over two decades, we have grown from a modest beginning into a thriving institution trusted by thousands of families across Mathura and beyond.</p>
+<p class="bl">Our curriculum blends rigorous CBSE academics with co-curricular depth — sports, arts, leadership, and character development — because we believe a complete education shapes not just careers, but lives.</p>
+<div class="ab-stats">
+<div class="ab-stat dc glass rev">
+<div class="ab-stat-n">2003</div>
+<div class="ab-stat-l">Year Founded</div>
+</div>
+<div class="ab-stat dc glass rev">
+<div class="ab-stat-n">K–XII</div>
+<div class="ab-stat-l">Play Group to<br>Class XII</div>
+</div>
+<div class="ab-stat dc glass rev">
+<div class="ab-stat-n">3</div>
+<div class="ab-stat-l">Streams: Science<br>Commerce & Arts</div>
+</div>
+</div>
+</div>
+<div class="rev">
+<div class="about-img-wrap" id="about-img-wrap">
+<img src="/images/img_jpeg_01.jpg" loading="lazy" decoding="async" alt="Baldeo Public School Campus" style="width:100%;height:100%;object-fit:cover;"/>
+<div class="about-img-badge dc">
+<div class="about-badge-n">22+</div>
+<div class="about-badge-l">Years of<br>Excellence</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="mission-vision" aria-labelledby="mv-heading">
+<div class="mv-bg" aria-hidden="true">
+<div class="mv-grad" aria-hidden="true"></div>
+<div class="dir-portrait rev" aria-hidden="true">
+<img src="/images/img_jpeg_01.jpg" loading="lazy" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.18;filter:grayscale(40%);"/>
+</div>
+</div>
+<div class="si mv-inner">
+<span class="eg rev" style="color:rgba(255,255,255,.5)">Our Purpose</span>
+<h2 class="mv-ht rev" id="mv-heading">
+<span class="morph-el" id="mm1" aria-hidden="true">Recognise. Nurture. Achieve.</span>
+<span class="morph-el" id="mm2" aria-hidden="true">Minds that Question. Hearts that Care.</span>
+</h2>
+<div class="mv-strip rev" aria-hidden="true">
+<img src="/images/img_jpeg_01.jpg" loading="lazy" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.22;"/>
+</div>
+<div class="mv-cols">
+<div class="mv-col rev" style="transition-delay:.05s">
+<div class="mv-ico" aria-hidden="true">⚖️</div>
+<h3 class="mv-ch">Justice</h3>
+<p class="mv-cp">We believe every child deserves an equal opportunity to discover and develop their unique gifts — regardless of background, ability, or circumstance.</p>
+</div>
+<div class="mv-col rev" style="transition-delay:.12s">
+<div class="mv-ico" aria-hidden="true">❤️</div>
+<h3 class="mv-ch">Love</h3>
+<p class="mv-cp">Learning flourishes in an environment of warmth and care. Our teachers don't just instruct — they inspire, mentor, and champion every student's journey.</p>
+</div>
+<div class="mv-col rev" style="transition-delay:.19s">
+<div class="mv-ico" aria-hidden="true">☮️</div>
+<h3 class="mv-ch">Peace</h3>
+<p class="mv-cp">A calm, safe campus is the foundation of great learning. We cultivate an atmosphere of respect, empathy, and harmony that extends beyond our school gates.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="academics" aria-labelledby="ac-heading">
+<div class="seb">Academics</div>
+<div class="si">
+<div style="text-align:center;margin-bottom:52px" class="rev">
+<span class="eg">Curriculum & Streams</span>
+<h2 id="ac-heading">Excellence Starts<br><span class="gold-text">in the Classroom</span></h2>
+<p class="blg" style="max-width:46rem;margin:18px auto 0">Our CBSE curriculum is delivered by experienced faculty who combine deep subject knowledge with innovative pedagogy — preparing students for board examinations, competitive entrance tests, and life beyond school.</p>
+</div>
+<div class="sw" id="sw">
+<div class="sc dc glass" data-stream="Science">
+<div class="sc-tag">Science Stream</div>
+<h3 class="sc-h">Physics · Chemistry · Biology · Maths</h3>
+<p class="sc-p">For students aspiring to engineering, medicine, research, or technology. A rigorous, concept-driven programme aligned with JEE and NEET preparation.</p>
+<div class="sc-ft">Classes XI – XII &nbsp;·&nbsp; CBSE Board</div>
+</div>
+<div class="sc dc glass" data-stream="Commerce">
+<div class="sc-tag">Commerce Stream</div>
+<h3 class="sc-h">Accountancy · Economics · Business Studies</h3>
+<p class="sc-p">Ideal for future entrepreneurs, chartered accountants, and business leaders. Practical learning rooted in real-world financial and commercial concepts.</p>
+<div class="sc-ft">Classes XI – XII &nbsp;·&nbsp; CBSE Board</div>
+</div>
+<div class="sc dc glass" data-stream="Arts">
+<div class="sc-tag">Arts & Humanities</div>
+<h3 class="sc-h">History · Geography · Political Science · Psychology</h3>
+<p class="sc-p">A pathway to law, civil services, journalism, social work, and the liberal arts. Develops critical thinking, communication, and civic awareness.</p>
+<div class="sc-ft">Classes XI – XII &nbsp;·&nbsp; CBSE Board</div>
+</div>
+</div>
+<p style="text-align:center;font-size:.72rem;color:var(--muted);margin-top:18px;letter-spacing:.08em">Tap the card to cycle streams</p>
+<div style="margin-top:56px" class="rev">
+<span class="eg">Primary & Secondary</span>
+<h3 class="dmd" style="margin-bottom:22px">A Foundation That<br><span class="gold-text">Lasts a Lifetime</span></h3>
+<div class="g2 r9">
+<div>
+<p class="bl">From Play Group through Class X, our primary and secondary programme emphasises conceptual clarity, mother-tongue literacy, and strong numeracy — the building blocks every student needs for success at senior secondary level and beyond.</p>
+<ul class="ac-list">
+<li>Play Group / Nursery / KG — joyful, activity-based learning</li>
+<li>Classes I–V — NCERT-aligned with project-based methods</li>
+<li>Classes VI–X — CBSE Board preparation with practicals</li>
+<li>Dedicated Science, Computer, and Language labs</li>
+<li>Regular PTMs, progress reports, and individual mentoring</li>
+</ul>
+</div>
+<div class="rev fr">
+<div class="ip" style="height:38vh;min-height:240px">
+<img src="/images/img_jpeg_01.jpg" loading="lazy" decoding="async" alt="BPS Academics" onerror="this.parentElement.style.background='linear-gradient(135deg,#F5EDD4,#E8E6DF)'"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="facilities" aria-labelledby="fac-heading">
+<div class="seb">Facilities</div>
+<div class="si">
+<div style="text-align:center;margin-bottom:52px" class="rev">
+<span class="eg">World-Class Infrastructure</span>
+<h2 id="fac-heading">Built for<br><span class="gold-text">Every Aspiration</span></h2>
+<p class="blg" style="max-width:44rem;margin:18px auto 0">Learning happens everywhere — not just inside the classroom. Our campus is designed to inspire curiosity, encourage collaboration, and support every dimension of student development.</p>
+</div>
+<div class="fac-grid">
+<div class="fac-card dc glass rev">
+<div class="fac-ico" aria-hidden="true">🔬</div>
+<h3 class="fac-h">Science Labs</h3>
+<p class="fac-p">Fully equipped Physics, Chemistry, and Biology laboratories with modern apparatus for hands-on CBSE practical curriculum.</p>
+</div>
+<div class="fac-card dc glass rev" style="transition-delay:.04s">
+<div class="fac-ico" aria-hidden="true">💻</div>
+<h3 class="fac-h">Computer Lab</h3>
+<p class="fac-p">State-of-the-art computers with broadband internet, supporting programming, digital literacy, and computational thinking from Class III onwards.</p>
+</div>
+<div class="fac-card dc glass rev" style="transition-delay:.08s">
+<div class="fac-ico" aria-hidden="true">📚</div>
+<h3 class="fac-h">Library</h3>
+<p class="fac-p">A rich collection of reference books, CBSE study materials, periodicals, and a quiet reading zone — open every school day.</p>
+</div>
+<div class="fac-card dc glass rev" style="transition-delay:.12s">
+<div class="fac-ico" aria-hidden="true">🏀</div>
+<h3 class="fac-h">Sports Grounds</h3>
+<p class="fac-p">Dedicated courts for Basketball, Volleyball, Badminton, and Football, plus an indoor games room for Table Tennis, Chess, and Carrom.</p>
+</div>
+<div class="fac-card dc glass rev" style="transition-delay:.16s">
+<div class="fac-ico" aria-hidden="true">🎨</div>
+<h3 class="fac-h">Arts & Culture</h3>
+<p class="fac-p">A creative studio for fine arts, dance rehearsal space, and an auditorium for performances — nurturing every child's artistic voice.</p>
+</div>
+<div class="fac-card dc glass rev" style="transition-delay:.20s">
+<div class="fac-ico" aria-hidden="true">🍱</div>
+<h3 class="fac-h">Hygienic Canteen</h3>
+<p class="fac-p">Nutritious, home-style meals prepared fresh every day in a clean, FSSAI-compliant kitchen — keeping students energised and healthy.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="transport" aria-labelledby="tr-heading">
+<div class="tr-wrap">
+<div class="tr-left rev">
+<div class="tr-eyebrow">
+<span class="tr-eyebrow-dash"></span>
+<span class="tr-eyebrow-text">Transport & Safety</span>
+</div>
+<h2 class="tr-h1" id="tr-heading">Safe Roads<br><span class="tr-h1-dim">Every Mile</span><br><span class="tr-h1-gold">Every Child.</span></h2>
+<p class="tr-body">A child's mood is set before they enter the classroom. At Baldeo Public School we create the atmosphere for learning right at the doorstep — with a safe, comfortable, GPS-monitored journey every single day.</p>
+<div class="tr-cards">
+<div class="tr-card"><div class="tr-card-icon" aria-hidden="true">🚌</div><div class="tr-card-body"><p class="tr-card-title">GPRS-Enabled AC Fleet</p><p class="tr-card-desc">Air-conditioned buses covering Baldeo, surrounding villages and Mathura City — every route tracked in real time.</p></div></div>
+<div class="tr-card"><div class="tr-card-icon" aria-hidden="true">🛡️</div><div class="tr-card-body"><p class="tr-card-title">Trained Drivers & Guardians</p><p class="tr-card-desc">Experienced drivers with regular orientation programs. Guards and nannies accompany younger children at every step.</p></div></div>
+<div class="tr-card"><div class="tr-card-icon" aria-hidden="true">🔐</div><div class="tr-card-body"><p class="tr-card-title">Campus Security</p><p class="tr-card-desc">Well-trained security personnel maintain strict vigilance over all campus entry points during and beyond school hours.</p></div></div>
+</div>
+</div>
+<div class="tr-right rev">
+<div class="tr-badge" aria-hidden="true"><div class="tr-badge-inner"><span class="tr-badge-num">24</span><span class="tr-badge-text">hr<br>coverage</span></div></div>
+<div class="tr-visual">
+<div class="tr-visual-bg" aria-hidden="true"></div>
+<div aria-hidden="true">
+<div class="tr-star" style="top:8%;left:15%;--d:2.8s;--delay:.3s"></div>
+<div class="tr-star" style="top:12%;left:55%;--d:3.5s;--delay:.8s"></div>
+<div class="tr-star" style="top:6%;left:80%;--d:2.2s;--delay:1.2s"></div>
+<div class="tr-star" style="top:20%;left:32%;--d:4s;--delay:.5s"></div>
+</div>
+<div class="tr-vis-label" aria-hidden="true"><span class="tr-vis-dot"></span><span class="tr-vis-tag">Live Tracking Active</span></div>
+<div class="tr-route" aria-hidden="true">
+<svg viewBox="0 0 300 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<path class="tr-path-line" d="M150,60 C180,100 110,140 150,180 C190,220 110,260 150,300 C190,340 110,380 150,420"/>
+<circle class="tr-bus-dot tr-bus-anim" cx="150" cy="180" r="5"/>
+<circle cx="150" cy="60" r="4" fill="rgba(194,65,12,.6)"/>
+<circle cx="150" cy="420" r="5" fill="rgba(22,163,74,.8)"/>
+</svg>
+</div>
+<div class="tr-pin" style="top:9%;left:50%;transform:translateX(-50%)" aria-label="Mathura City"><div class="tr-pin-dot"></div><span class="tr-pin-label">Mathura City</span></div>
+<div class="tr-pin" style="top:31%;left:68%" aria-label="Villages"><div class="tr-pin-dot"></div><span class="tr-pin-label">Villages</span></div>
+<div class="tr-pin" style="top:52%;left:22%" aria-label="Baldeo Town"><div class="tr-pin-dot"></div><span class="tr-pin-label">Baldeo Town</span></div>
+<div class="tr-bus-icon" aria-hidden="true">🚌</div>
+<div class="tr-stats" aria-label="Transport statistics">
+<div class="tr-stat"><span class="tr-stat-num">GPS</span><span class="tr-stat-label">Live<br>Tracking</span></div>
+<div class="tr-stat"><span class="tr-stat-num">AC</span><span class="tr-stat-label">Air<br>Conditioned</span></div>
+<div class="tr-stat"><span class="tr-stat-num">100<span style="font-size:.7em">%</span></span><span class="tr-stat-label">Safe<br>Routes</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="student-life" aria-labelledby="sl-heading">
+<div class="seb">Student Life</div>
+<div class="si">
+<div style="text-align:center;margin-bottom:52px" class="rev">
+<span class="eg">Activities & Sports</span>
+<h2 id="sl-heading">"Healthy Mind Lives<br><span class="gold-text">in a Healthy Body"</span></h2>
+<p class="blg" style="max-width:48rem;margin:18px auto 0">At BPS, we believe physical activities go hand in hand with academics and culture. We have dedicated courts for Basketball, Volleyball, Badminton and Football, along with a sports room for indoor games.</p>
+</div>
+<div class="rev" style="margin-bottom:44px">
+<h3 style="font-family:var(--fd);font-size:1.25rem;font-weight:700;color:var(--gold);margin-bottom:6px;letter-spacing:-.02em">The Four Houses</h3>
+<p class="bsm" style="margin-bottom:18px;max-width:44rem">To inculcate a spirit of healthy competition, leadership and fair play, all students are divided into four houses:</p>
+<div class="house-grid">
+<div class="house glass dc" style="background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.09)"><div class="house-color" style="background:#2563EB"></div><div class="house-name" style="color:#1A1A1A">Rigved</div><div class="house-sub">Blue House</div></div>
+<div class="house glass dc" style="background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.09)"><div class="house-color" style="background:#EAB308"></div><div class="house-name" style="color:#1A1A1A">Samved</div><div class="house-sub">Yellow House</div></div>
+<div class="house glass dc" style="background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.09)"><div class="house-color" style="background:#DC2626"></div><div class="house-name" style="color:#1A1A1A">Yajurved</div><div class="house-sub">Red House</div></div>
+<div class="house glass dc" style="background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.09)"><div class="house-color" style="background:#16A34A"></div><div class="house-name" style="color:#1A1A1A">Atharvved</div><div class="house-sub">Green House</div></div>
+</div>
+</div>
+<div class="g2 r9">
+<div class="rev">
+<span class="eg">Championships Won</span>
+<h3 class="dmd" style="margin-bottom:22px;color:#1A1A1A">Proven on the<br><span class="gold-text">National Stage</span></h3>
+<div class="achieve-item"><div class="achieve-ico">🏆</div><div class="achieve-txt"><strong>CBSE Cluster (IV) Winner</strong> — Volleyball Under-17 Boys (2017)</div></div>
+<div class="achieve-item"><div class="achieve-ico">🥈</div><div class="achieve-txt"><strong>CBSE Cluster Runner-up</strong> — Kabaddi Under-19 Boys (2017)</div></div>
+<div class="achieve-item"><div class="achieve-ico">🏅</div><div class="achieve-txt"><strong>District Champion</strong> — Volleyball Boys (2016, 2017, 2018)</div></div>
+<div class="achieve-item"><div class="achieve-ico">🥇</div><div class="achieve-txt"><strong>CBSE Cluster Winner</strong> — Kabaddi Under-19 Boys (2018)</div></div>
+<div class="achieve-item"><div class="achieve-ico">🥋</div><div class="achieve-txt"><strong>Overall Winner</strong> — CBSE East Zone Judo Championship (2018, 2019)</div></div>
+</div>
+<div class="rev fr" style="display:flex;flex-direction:column;gap:14px">
+<div class="ip" style="height:36vh;min-height:220px">
+<img src="/images/img_jpeg_01.jpg" loading="lazy" decoding="async" alt="BPS Sports" onerror="this.parentElement.style.background='linear-gradient(135deg,#F5EDD4,#E8E6DF)'"/>
+</div>
+<div class="dc glass" style="border-radius:22px;padding:22px;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.09);box-shadow:0 4px 20px rgba(0,0,0,.06)">
+<h4 style="font-family:var(--fd);font-size:1rem;font-weight:700;color:#1A1A1A;margin-bottom:8px">Weekend Programme</h4>
+<p class="bsm">Every Saturday, students practise various activities like dance, painting, fancy dress and posters — building leadership and personality alongside academics.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="admissions" style="padding:0!important" aria-labelledby="adm-heading">
+<div class="adm-wrap">
+<div class="adm-left rev fl">
+<div class="adm-eyebrow"><span class="adm-eyebrow-dot"></span><span class="adm-eyebrow-txt">Admissions 2026–27</span></div>
+<h2 class="adm-headline" id="adm-heading">Every great journey<br>begins with a<br><em>single step.</em></h2>
+<p class="adm-sub">Admissions open from Play Group to Class XI — Science, Commerce & Arts. The session runs April to March.</p>
+<div class="adm-criteria">
+<div class="adm-crit-item rev" style="transition-delay:.05s"><div class="adm-crit-ico">🎂</div><div class="adm-crit-txt">Minimum age for Play Group / Nursery is <strong>Three (3) Years</strong></div></div>
+<div class="adm-crit-item rev" style="transition-delay:.1s"><div class="adm-crit-ico">✍️</div><div class="adm-crit-txt">Written test + Oral Interview for all classes <strong>except Nursery</strong></div></div>
+<div class="adm-crit-item rev" style="transition-delay:.15s"><div class="adm-crit-ico">📋</div><div class="adm-crit-txt">Transfer Certificate (TC) + Report Card from previous school</div></div>
+</div>
+</div>
+<div class="adm-right rev" id="contact">
+<div class="adm-form-card dc">
+<h3 class="adm-fh">Enquire Now</h3>
+<p class="adm-fp">Fill the form and we'll reach out within 24 hours via WhatsApp.</p>
+<div class="adm-fields">
+<div class="adm-field"><label class="adm-lbl" for="fn">Parent / Guardian Name</label><input id="fn" type="text" class="adm-inp" placeholder="Your full name" autocomplete="name"/></div>
+<div class="adm-field"><label class="adm-lbl" for="fp">WhatsApp Number</label><input id="fp" type="tel" class="adm-inp" placeholder="+91 00000 00000" autocomplete="tel"/></div>
+<div class="adm-field"><label class="adm-lbl" for="fc">Class Seeking Admission</label>
+<select id="fc" class="adm-inp adm-sel">
+<option value="">Select Class</option>
+<option>Play Group</option><option>Nursery</option><option>KG</option>
+<option>Class I</option><option>Class II</option><option>Class III</option>
+<option>Class IV</option><option>Class V</option><option>Class VI</option>
+<option>Class VII</option><option>Class VIII</option><option>Class IX</option>
+<option>Class X</option><option>Class XI – Science</option>
+<option>Class XI – Commerce</option><option>Class XI – Arts</option>
+</select></div>
+<div class="adm-field"><label class="adm-lbl" for="fm">Message (optional)</label><textarea id="fm" class="adm-inp adm-ta" placeholder="Any questions or special requirements…" rows="3"></textarea></div>
+</div>
+<div id="fe" class="adm-fer" style="display:none" role="alert"></div>
+<button id="fs" class="adm-sub" type="button">
+<span>Send via WhatsApp</span>
+<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="ftd-root" style="scroll-snap-align:start;">
+<div class="ftd-wrap">
+<div class="ftd-card">
+<div class="ftd-inner">
+<div class="ftd-brand">
+<a href="#hero" class="ftd-brand-name">Baldeo<br>Public School</a>
+<p class="ftd-brand-desc">English Medium Senior Secondary Co-Ed School, Baldeo, Mathura. CBSE Affiliated — No. 2130785.</p>
+</div>
+<div class="ftd-cols">
+<div class="ftd-col">
+<p class="ftd-col-head">Explore</p>
+<a href="#about">About</a><a href="#mission-vision">Mission & Vision</a>
+<a href="#academics">Academics</a><a href="#facilities">Facilities</a><a href="#student-life">Student Life</a>
+</div>
+<div class="ftd-col">
+<p class="ftd-col-head">Admissions</p>
+<a href="#admissions">Schedule</a><a href="#admissions">Guidelines</a>
+<a href="#admissions">Fee Structure</a><a href="#contact">Contact Us</a>
+</div>
+<div class="ftd-col">
+<p class="ftd-col-head">Connect</p>
+<a href="tel:+919720513100">+91 972 051 3100</a>
+<a href="tel:+918958739055">+91 895 873 9055</a>
+<a href="mailto:baldeopublicschoolmathura@gmail.com">Email Us</a>
+<a href="#">Mathura Road, Baldeo, U.P.</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ftd-bottom">
+<div class="ftd-copy">
+<span>©<span id="tf-year2"></span> Baldeo Public School, Mathura. All rights reserved.</span>
+<a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a>
+</div>
+<div class="ftd-social">
+<a href="#" aria-label="Facebook" target="_blank" rel="nofollow noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+<a href="#" aria-label="YouTube" target="_blank" rel="nofollow noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FAFAF8"/></svg></a>
+<a href="https://wa.me/919720513100" aria-label="WhatsApp" target="_blank" rel="nofollow noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="/main.js" defer></script>
+</body>
+</html>
